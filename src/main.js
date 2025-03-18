@@ -24,6 +24,7 @@ function render(data) {
 
     for (const pokemon of data) {
         const pokeLink = document.createElement("a");
+        pokeLink.href = `./detail.html?id=${pokemon.id}`;
 
         const img = document.createElement('img');
 
