@@ -1,6 +1,8 @@
 import PokeService from "./service/poke-service.js";
+import StorageService from "./service/storage-service.js";
 
 const pService = new PokeService();
+const pStorage = new StorageService();
 
 function next() {
     pService.nextPage();
@@ -15,14 +17,26 @@ function previous() {
 window.previous = previous;
 window.next = next;
 
-pService.getPokeData().then(data => render(data));
+// pService.getPokeData().then(data => render(data));
+
+const pokemon = await pService.getPokeData();
+render(pokemon);
+
+function savePokemon(event, index) {
+    event.preventDefault();
+    const selectedPokemon = pokemon[index];
+    pStorage.save(selectedPokemon);
+    
+}
 
 function render(data) {
     const root = document.getElementById("root");
     root.classList.add("main-container");
     root.innerHTML = "";
 
-    for (const pokemon of data) {
+    for (let i = 0; i < data.length; i++) {
+        const pokemon = data[i];
+
         const pokeLink = document.createElement("a");
         pokeLink.href = `./detail.html?id=${pokemon.id}`;
 
@@ -35,6 +49,17 @@ function render(data) {
         const node = document.createTextNode(pokemon.name);
 
         pokeLink.appendChild(node);
+
+        const saveBtn = document.createElement("button");
+
+        saveBtn.addEventListener("click", (event) => savePokemon(event , i));
+
+        const bNode = document.createTextNode("Save");
+
+        saveBtn.appendChild(bNode);
+        pokeLink.appendChild(saveBtn);
+
         root.appendChild(pokeLink);
+        
     }
 }
