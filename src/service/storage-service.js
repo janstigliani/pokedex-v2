@@ -11,7 +11,7 @@ class StorageService {
         if (starredPokemonString) {
 
             const starredPokemons = JSON.parse(starredPokemonString);
-            starredPokermons.push(pokemon);
+            starredPokemons.push(pokemon);
             localStorage.setItem("starred", JSON.stringify(starredPokemons));
         } else {
             const starredPokemons = [];
@@ -19,8 +19,22 @@ class StorageService {
             localStorage.setItem("starred", JSON.stringify(starredPokemons));
         }
 
-
     }
+
+    getStarredPokemonData(){
+        const starredPokemonString = localStorage.getItem('starred')
+
+        if (starredPokemonString) {
+            
+            const starredPokemons = JSON.parse(starredPokemonString);
+            return starredPokemons;
+
+        } else {
+            const starredPokemons = [];
+            return starredPokemons;
+        }
+    }
+    
 }
 
 export default StorageService;
